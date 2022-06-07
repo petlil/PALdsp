@@ -21,7 +21,7 @@ public:
         this->freq = frequency;
     }
     
-    ~filter(){};
+    virtual ~filter() {}
     
     /**
      * @brief Processes a sample through this filter.
@@ -30,7 +30,7 @@ public:
      * @return float The processed sample
      */
     virtual inline float processSample(float samp) = 0;
-    virtual int setType(int type) = 0;
+    virtual void setType(int newType) = 0;
     
 protected:
     int filterType;

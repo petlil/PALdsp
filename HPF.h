@@ -12,12 +12,10 @@
 
 #include "Biquad.h"
 
-#ifndef LPF_h
-#define LPF_h
-#define PI 3.14159265358979323846;
-#include <math.h>
+#ifndef HPF_h
+#define HPF_h
 
-class LPF : public Biquad {
+class HPF : public Biquad {
 public:
     
     enum type {
@@ -26,11 +24,11 @@ public:
     };
     
     // constructor with default coefficients
-    LPF(type filterType, float frequency) : Biquad (filterType, frequency) {
+    HPF(type filterType, float frequency) : Biquad (filterType, frequency) {
         float theta = 2 * freq * PI;
         float gamma = cos(theta) / (1 + sin(theta));
-        a0 = (1 - gamma) / 2;
-        a1 = (1 - gamma) / 2;
+        a0 = (1 + gamma) / 2;
+        a1 = -1 * ((1 + gamma) / 2);
         a2 = 0.0f;
         b1 = gamma * -1;
         b2 = 0.0f;
@@ -39,31 +37,32 @@ public:
     }
 
     // constructor for custom coefficients
-    LPF(type lfoType, float frequency, float a0, float a1, float a2, float b1, float b2, float c0, float d0)
+    HPF(type lfoType, float frequency, float a0, float a1, float a2, float b1, float b2, float c0, float d0)
          : Biquad (filterType, frequency, a0, a1, a2, b1, b2, c0, d0){}
-    
-    ~LPF(){};
     
     inline float processSample(float samp){
         
         if(filterType == FIRSTORDER) {
-            float result = samp + (firstOrderDelay * bandWidth);
-            firstOrderDelay = samp;
+            float result = ((1 + bandWidth) / 2) * (samp - firstOrderDelayDry) + firstOrderDelayWet;
+            firstOrderDelayDry = samp;
+            firstOrderDelayWet = result;
             return result;
         }
         else if(filterType == BIQUAD) {
             return Biquad::processSample(samp);
         }
+        else return 0.0f;
     }
 
-    int setType(type newType) {
+    void setType(int newType) {
         filterType = newType;
     }
 
 private:
-    float firstOrderDelay = 0;
+    float firstOrderDelayDry = 0;
+    float firstOrderDelayWet = 0;
     float bandWidth = 1;
 };
 
 
-#endif /* LPF_h */
+#endif /* HPF_h */

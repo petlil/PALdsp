@@ -14,6 +14,8 @@
 
 #ifndef Biquad_h
 #define Biquad_h
+#define PI 3.14159265358979323846;
+#include <math.h>
 
 class Biquad : public filter {
 public:
@@ -29,8 +31,8 @@ public:
       this->c0 = c0;
       this->d0 = d0;
     }
-    
-    ~Biquad(){};
+
+    virtual ~Biquad() {}
     
     inline float processSample(float samp){
         // calculate result
@@ -49,7 +51,7 @@ public:
         return (result * c0) + d0;
     }
 
-    virtual int setType() = 0;
+    virtual void setType(int newType) = 0;
 
     void reset() {
         a1Delay = 0;
