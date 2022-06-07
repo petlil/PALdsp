@@ -16,8 +16,9 @@
 class filter {
 public:
     
-    filter(int filterType){
+    filter(int filterType, float frequency){
         this->filterType = filterType;
+        this->freq = frequency;
     }
     
     ~filter(){};
@@ -31,7 +32,7 @@ public:
     virtual inline float processSample(float samp) = 0;
     virtual int setType(int type) = 0;
     
-private:
+protected:
     int filterType;
     int freq = 0;
     int q = 1;
