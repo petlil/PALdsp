@@ -25,8 +25,8 @@ public:
     
     // constructor with default coefficients
     HPF(type filterType, float frequency) : Biquad (filterType, frequency) {
-        float theta = 2 * freq * PI;
-        float gamma = cos(theta) / (1 + sin(theta));
+        double theta = 2 * freq * PI;
+        double gamma = cos(theta) / (1 + sin(theta));
         a0 = (1 + gamma) / 2;
         a1 = -1 * ((1 + gamma) / 2);
         a2 = 0.0f;
@@ -59,9 +59,9 @@ public:
     }
 
 private:
-    float firstOrderDelayDry = 0;
-    float firstOrderDelayWet = 0;
-    float bandWidth = 1;
+    double firstOrderDelayDry = 0;
+    double firstOrderDelayWet = 0;
+    double bandWidth = 1;
 };
 
 

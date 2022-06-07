@@ -25,8 +25,8 @@ public:
     
     // constructor with default coefficients
     LPF(type filterType, float frequency) : Biquad (filterType, frequency) {
-        float theta = 2 * freq * PI;
-        float gamma = cos(theta) / (1 + sin(theta));
+        double theta = 2 * freq * PI;
+        double gamma = cos(theta) / (1 + sin(theta));
         a0 = (1 - gamma) / 2;
         a1 = (1 - gamma) / 2;
         a2 = 0.0f;
@@ -58,8 +58,8 @@ public:
     }
 
 private:
-    float firstOrderDelay = 0;
-    float bandWidth = 0.5; // hard-set bandwidth for now
+    double firstOrderDelay = 0;
+    double bandWidth = 0.5; // hard-set bandwidth for now
 };
 
 

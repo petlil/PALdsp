@@ -35,8 +35,9 @@ public:
     virtual ~Biquad() {}
     
     inline float processSample(float samp){
+        
         // calculate result
-        float result = (a0 * samp) +
+        double result = (a0 * samp) +
                        (a1 * a1Delay) +
                        (a2 * a2Delay) -
                        (b1 * b1Delay) -
@@ -48,7 +49,7 @@ public:
         b2Delay = b1Delay;
         b1Delay = result;
 
-        return (result * c0) + d0;
+        return (float) ((result * c0) + (samp * d0));
     }
 
     virtual void setType(int newType) = 0;
@@ -62,12 +63,12 @@ public:
     
 protected:
     // coefficients
-    float a0 = 0, a1 = 0, a2 = 0, b1 = 0, b2 = 0, d0 = 0, c0 = 0;
+    double a0 = 0, a1 = 0, a2 = 0, b1 = 0, b2 = 0, d0 = 0, c0 = 0;
     // delay registers
-    float a1Delay = 0;
-    float a2Delay = 0;
-    float b1Delay = 0;
-    float b2Delay = 0;
+    double a1Delay = 0;
+    double a2Delay = 0;
+    double b1Delay = 0;
+    double b2Delay = 0;
 };
 
 
