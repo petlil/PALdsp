@@ -9,8 +9,8 @@
 */
 
 #define AllPassFilter_h
-#include "CircularBuffer.h"
-#include "CircularBufferVariable.h"
+#include "CircularBufferShort.h"
+#include "LFO.h"
 
 class AllPassFilter {
 public:
@@ -22,7 +22,7 @@ public:
     An allpass filter with a given delay length and feedback/forward gains
     */
     AllPassFilter(unsigned int length, float feedbackGain, float feedForwardGain){
-        buffer.setReadHeadDelay(length);
+        buffer.setLengthSamples(length);
         delay = length;
         this->feedbackGain = feedbackGain;
         this->feedForwardGain = feedForwardGain;
@@ -32,11 +32,18 @@ public:
     A modulated allpass filter with a given delay length and feedback/forward gains,
     plus given modulation rate (in Hz) and size (in samples).
     */
-    AllPassFilter(unsigned int length, float feedbackGain, float feedForwardGain, float lfoRate, float lfoSizeSamples){
-        buffer.setReadHeadDelay(length);
+    AllPassFilter(unsigned int length, float feedbackGain, float feedForwardGain,
+                  float lfoFreq, float lfoSizeSamples, int sampleRate = 44100, float phase = 0){
+        buffer.setLengthSamples(length);
         delay = length;
         this->feedbackGain = feedbackGain;
         this->feedForwardGain = feedForwardGain;
+        
+        lfo.setfrequency(lfoFreq); // modulation rate
+        lfo.setRange(0, 1);
+        lfo.setPhase(phase);
+        buffer.setSampleRate(sampleRate);
+        buffer.setModRange(lfoSizeSamples); // modulation range
     }
     
     ~AllPassFilter(){};
@@ -46,6 +53,8 @@ public:
      Returns the next sample.
      */
     inline float processSample(float sample) {
+        lfo.next();
+        buffer.mapReadHeadMod(lfo.getValue());
         float next = buffer.getSample();
         buffer.pushSample(sample + (next * feedbackGain));
         return next + (sample * feedForwardGain);
@@ -82,8 +91,12 @@ public:
     }
     
 private:
-    CircularBuffer buffer { 1 }; // default length of 1
+    // standard allpass fields
+    CircularBufferShort buffer { 1 }; // default length of 1
     unsigned int delay;
     float feedForwardGain;
     float feedbackGain;
+    
+    // modulated allpass fields
+    LFO lfo;
 };

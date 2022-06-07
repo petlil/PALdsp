@@ -2,7 +2,6 @@
 #include "BitCrush.h"
 #include "CircularBuffer.h"
 #include "CircularBufferLong.h"
-#include "CircularBufferVariable.h"
 #include "FeedbackCombFilter.h"
 #include "Gain.h"
 #include "LFO.h"

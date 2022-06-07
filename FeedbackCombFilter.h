@@ -11,12 +11,13 @@
 #ifndef FeedbackCombFilter_h
 #define FeedbackCombFilter_h
 
-#include "CircularBufferVariable.h"
+#include "CircularBufferShort.h"
 
 class FeedbackCombFilter {
 public:
+    
     FeedbackCombFilter(int delay, float feedbackGain){
-        buffer.setReadHeadDelay(delay);
+        buffer.setLengthSamples(delay);
         this->delay = delay;
         this->feedbackGain = feedbackGain;
     }
@@ -36,7 +37,7 @@ public:
     /* Set length of delay line. */
     inline void setDelay(int delay) {
         this-> delay = delay;
-        buffer.setReadHeadDelay(1);
+        buffer.setLengthSamples(1);
     }
     
     /* Set gain of feedback parameter. */
@@ -53,7 +54,7 @@ public:
     }
     
 private:
-    CircularBuffer buffer { 1 }; // default buffer with length 1 sample
+    CircularBufferShort buffer { 1 }; // default buffer with length 1 sample
     int delay;
     float feedbackGain;
 };

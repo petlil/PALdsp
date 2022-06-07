@@ -121,12 +121,30 @@ public:
     }
     
     /**
+     Sets the phase value of this LFO (From 0 - 1).
+     */
+    inline void setPhase(float phase) {
+        jassert(phase <= 1 && phase >= 0);
+        phaseVal = phase;
+    }
+    
+    /**
+     Get the phase of this LFO
+     */
+    inline float getPhase() {
+        return phaseVal;
+    }
+    
+    /**
      Get the value at the current point the LFO cycle.
      */
     inline float getValue(float phase = 0){
-        // cheack the phase is within 0-1
-        jassert(phase <= 1 && phase >= 0);
-        phase = (phase > 1 || phase < 0) ? 0 : phase;
+        if(phaseVal == 0) {
+            // cheack the phase is within 0-1
+            jassert(phase <= 1 && phase >= 0);
+            phase = (phase > 1 || phase < 0) ? 0 : phase;
+        }
+        else phase = phaseVal;
         
         // get the current progress as a float value from 0 - 1
         float progress = (float) currProgress / (float) samplesPerCycle;
@@ -177,6 +195,7 @@ private:
     int samplesPerCycle; // number of samples in an LFO cycle
     int currProgress; // progress through the LFO cycle (in samples)
     unsigned int currOscillator; // the type of oscillator
+    int phaseVal = 0;
     
     float min = 0;
     float max = 1;

@@ -177,5 +177,3 @@ private:
 
 
 #endif /* CircularBuffer_h */
-
-65536

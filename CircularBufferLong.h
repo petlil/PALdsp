@@ -146,7 +146,7 @@ public:
     }
     
     int getNumFeedbackProcessors() {
-        return feedbackFunctions.size();
+        return (int) feedbackFunctions.size();
     }
     
     
