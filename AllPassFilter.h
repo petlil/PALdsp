@@ -28,6 +28,17 @@ public:
         this->feedForwardGain = feedForwardGain;
     }
     
+    /**
+    A modulated allpass filter with a given delay length and feedback/forward gains,
+    plus given modulation rate (in Hz) and size (in samples).
+    */
+    AllPassFilter(unsigned int length, float feedbackGain, float feedForwardGain, float lfoRate, float lfoSizeSamples){
+        buffer.setReadHeadDelay(length);
+        delay = length;
+        this->feedbackGain = feedbackGain;
+        this->feedForwardGain = feedForwardGain;
+    }
+    
     ~AllPassFilter(){};
     
     /**
