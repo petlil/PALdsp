@@ -98,9 +98,7 @@ public:
      index 100 = 100 samples of delay, etc.
      */
     inline float tap(int index) {
-        if(writeHeadIndex < readHeadIndex) jassert(readHeadIndex - index > writeHeadIndex);
-        if(writeHeadIndex > readHeadIndex) jassert(readHeadIndex - index > writeHeadIndex - buflen);
-
+        jassert(index < getLatency());
         return buffer[wrap(writeHeadIndex - index)];
     }
     
