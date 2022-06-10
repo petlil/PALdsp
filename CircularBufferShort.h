@@ -93,6 +93,18 @@ public:
     }
     
     /**
+     Get a custom index from the buffer.
+     index 0 means no delay
+     index 100 = 100 samples of delay, etc.
+     */
+    inline float tap(int index) {
+        if(writeHeadIndex < readHeadIndex) jassert(readHeadIndex - index > writeHeadIndex);
+        if(writeHeadIndex > readHeadIndex) jassert(readHeadIndex - index > writeHeadIndex - buflen);
+
+        return buffer[wrap(writeHeadIndex - index)];
+    }
+    
+    /**
      Adds a function that will be applied to each sample that passes through the 'feedback' loop.
      */
     void addFeedbackProcessor(std::function<float(float)> function) {

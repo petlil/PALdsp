@@ -61,6 +61,13 @@ public:
     }
     
     /**
+     Taps the delay line at a given sample.
+     */
+    inline float tap(int index) {
+        return buffer.tap(index);
+    }
+    
+    /**
      Set gain of feedback line
      */
     inline void setFeedbackGain(float gain) {
