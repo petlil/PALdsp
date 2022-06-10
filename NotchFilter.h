@@ -34,7 +34,7 @@ public:
 
         b0 = 1;
         b1 = -2 * cosW0;
-        b2 = 1
+        b2 = 1;
         a0 = 1 + alpha;
         a1 = -2 * cosW0;
         a2 = 1 - alpha;

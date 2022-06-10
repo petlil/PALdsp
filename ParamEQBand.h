@@ -35,7 +35,7 @@ public:
         double A = pow(10.0, dbGain/40);
 
         // calculate coefficients
-        b0 = 1 + (alpha * A)
+        b0 = 1 + (alpha * A);
         b1 = -2 * cosW0;
         b2 = 1 - (alpha * A);
         a0 = 1 + (alpha / A);
