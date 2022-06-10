@@ -6,12 +6,14 @@
     Author:  Peter Liley
  
     Class for accessing various kinds of highpass filter
+ 
+    Equations from: Audio EQ Cookbook
+    https://webaudio.github.io/Audio-EQ-Cookbook/audio-eq-cookbook.html
 
   ==============================================================================
 */
 
 #include "Biquad.h"
-
 #ifndef HPF_h
 #define HPF_h
 
@@ -24,10 +26,10 @@ public:
     };
     
     // constructor with default coefficients
-    HPF(type filterType, float frequency, float Q) : Biquad (filterType, frequency) {
+    HPF(type filterType, float frequency, float Q, float wet = 1, float dry = 0) : Biquad (filterType, frequency, wet, dry) {
         
         // audio-eq-cookbook
-        double w0 = 2 * (freq/44100) * PI;
+        double w0 = 2 * (frequency/44100) * PI;
         double cosW0 = cos(w0);
         double sinW0 = sin(w0);
         double alpha = sinW0 / (Q * 2);
@@ -38,13 +40,7 @@ public:
         a0 = 1 + alpha;
         a1 = -2 * cosW0;
         a2 = 1 - alpha;
-        wet = 1.0f; // fully wet
-        dry = 0.0f; // no dry signal
     }
-
-    // constructor for custom coefficients
-    HPF(type lfoType, float frequency, float a0, float a1, float a2, float b0, float b1, float b2, float wet, float dry)
-         : Biquad (filterType, frequency, a0, a1, a2, b0, b1, b2, wet, dry){}
     
     inline float processSample(float samp){
         

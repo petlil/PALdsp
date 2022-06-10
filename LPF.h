@@ -6,6 +6,8 @@
     Author:  Peter Liley
  
     Class for accessing various kinds of lowpass filter
+    Equations from: Audio EQ Cookbook
+    https://webaudio.github.io/Audio-EQ-Cookbook/audio-eq-cookbook.html
 
   ==============================================================================
 */
@@ -23,8 +25,7 @@ public:
         BIQUAD
     };
     
-    // constructor with default coefficients
-    LPF(type filterType, float frequency, float Q) : Biquad (filterType, frequency, Q) {
+    LPF(type filterType, float frequency, float Q, float wet = 1, float dry = 0) : Biquad (filterType, frequency, wet, dry) {
 
         // audio-eq-cookbook
         double w0 = 2 * (frequency/44100) * PI;
@@ -38,13 +39,7 @@ public:
         a0 = 1 + alpha;
         a1 = -2 * cosW0;
         a2 = 1 - alpha;
-        wet = 1.0; // fully wet
-        dry = 0.0; // no dry signal
     }
-
-    // constructor for custom coefficients
-    LPF(type lfoType, float frequency, double Q, float a0, float a1, float a2, float b0, float b1, float b2, float wet, float dry)
-         : Biquad (filterType, frequency, Q, a0, a1, a2, b0, b1, b2, wet, dry){}
     
     inline float processSample(float samp){
         
