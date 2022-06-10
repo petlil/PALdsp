@@ -34,8 +34,7 @@ public:
     
 protected:
     int filterType;
-    int freq = 0;
-    int q = 1;
+    float freq = 0;
 };
 
 

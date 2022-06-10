@@ -24,21 +24,27 @@ public:
     };
     
     // constructor with default coefficients
-    HPF(type filterType, float frequency) : Biquad (filterType, frequency) {
-        double theta = 2 * freq * PI;
-        double gamma = cos(theta) / (1 + sin(theta));
-        a0 = (1 + gamma) / 2;
-        a1 = -1 * ((1 + gamma) / 2);
-        a2 = 0.0f;
-        b1 = gamma * -1;
-        b2 = 0.0f;
-        c0 = 1.0f;
-        d0 = 0.0f;
+    HPF(type filterType, float frequency, float Q) : Biquad (filterType, frequency) {
+        
+        // audio-eq-cookbook
+        double w0 = 2 * (freq/44100) * PI;
+        double cosW0 = cos(w0);
+        double sinW0 = sin(w0);
+        double alpha = sinW0 / (Q * 2);
+        
+        b0 = (1 + cosW0) / 2;
+        b1 = -1 * (1 + cosW0);
+        b2 = (1 + cosW0) / 2;
+        a0 = 1 + alpha;
+        a1 = -2 * cosW0;
+        a2 = 1 - alpha;
+        wet = 1.0f; // fully wet
+        dry = 0.0f; // no dry signal
     }
 
     // constructor for custom coefficients
-    HPF(type lfoType, float frequency, float a0, float a1, float a2, float b1, float b2, float c0, float d0)
-         : Biquad (filterType, frequency, a0, a1, a2, b1, b2, c0, d0){}
+    HPF(type lfoType, float frequency, float a0, float a1, float a2, float b0, float b1, float b2, float wet, float dry)
+         : Biquad (filterType, frequency, a0, a1, a2, b0, b1, b2, wet, dry){}
     
     inline float processSample(float samp){
         
