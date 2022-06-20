@@ -44,6 +44,8 @@ public:
         lfo.setPhase(phase);
         buffer.setSampleRate(sampleRate);
         buffer.setModRange(lfoSizeSamples); // modulation range
+        
+        isModulated = true;
     }
     
     ~AllPassFilter(){};
@@ -53,8 +55,10 @@ public:
      Returns the next sample.
      */
     inline float processSample(float sample) {
-        lfo.next();
-        buffer.mapReadHeadMod(lfo.getValue());
+        if(isModulated) {
+            lfo.next();
+            buffer.mapReadHeadMod(lfo.getValue());
+        }
         float next = buffer.getSample();
         buffer.pushSample(sample + (next * feedbackGain));
         return next + (sample * feedForwardGain);
@@ -106,4 +110,5 @@ private:
     
     // modulated allpass fields
     LFO lfo;
+    bool isModulated = false;
 };
