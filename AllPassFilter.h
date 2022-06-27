@@ -9,6 +9,7 @@
 */
 
 #define AllPassFilter_h
+#pragma once
 #include "CircularBufferShort.h"
 #include "LFO.h"
 

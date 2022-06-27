@@ -180,12 +180,6 @@ public:
         jassert(dur * sampleRate < buflen);
         readHeadIndex = wrap(writeHeadIndex - (int) (dur * sampleRate));
         durationSecs = dur;
-        
-        // alt approach:
-//        jassert(dur * sampleRate < buflen);
-//        readHeadIndex = 0;
-//        writeHeadIndex = (int) (dur * sampleRate);
-//        durationSecs = dur;
     }
     
     /**
