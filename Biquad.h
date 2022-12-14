@@ -16,7 +16,6 @@
 
 #ifndef Biquad_h
 #define Biquad_h
-#define PI 3.14159265358979323846;
 #include <math.h>
 
 class Biquad : public filter {
